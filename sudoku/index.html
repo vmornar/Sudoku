@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Join</title>
+    <meta name="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="sudoku/code.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="sudoku/css.css">
+</head>
+
+<body>
+    <table id="puzzle">
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="bb">
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="bb">
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td class="br"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <!-- <br> -->
+    <table id="numbers">
+        <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>7</td>
+            <td>8</td>
+            <td>9</td>
+            <td> </td>
+        </tr>
+    </table>
+    <div id="namediv" style="display: none">
+        <span>Name</span>&nbsp;<input id="name" size="3" type="text" />
+        <button onclick="join()">Join</button><br>
+    </div>
+    <!-- <button onclick="start(0)">Start</button> -->
+    <div id="gendiv" style="display: none">
+        <input type="text" size="2" value="50" id="perc" />
+        <button onclick="start(1)">Gen</button>
+        <span id="time">0:00</span><br>
+        <span id="res"></span>
+    </div>
+</body>
+
+</html>
