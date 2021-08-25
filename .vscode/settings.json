@@ -1,5 +1,7 @@
 {
     "files.associations": {
         "stdio.h": "c"
-    }
+    },
+    "appService.defaultWebAppToDeploy": "/subscriptions/1b80338b-889b-4fc2-949a-b4f06f786c7a/resourceGroups/WebApps/providers/Microsoft.Web/sites/SudokuVM",
+    "appService.deploySubpath": "."
 }

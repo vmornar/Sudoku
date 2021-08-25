@@ -10,7 +10,15 @@ var ws;
 function join() {
     var l = window.location.toString();
     var myname = $("#name").val();
-    ws = new WebSocket(l.replace("http://", "ws://") + "sudokusocket/" + myname);
+    console.log("l", l);
+    var url;
+    if (l.indexOf("https") >= 0) {
+        url = l.replace("https://", "wss://") + "sudokusocket/" + myname;
+    } else {
+        url = l.replace("http://", "ws://") + "sudokusocket/" + myname;
+    }
+    console.log("url", url);
+    ws = new WebSocket(url);
     ws.onmessage = function (msg) {
         var cmd = JSON.parse(msg.data);
         if (cmd.command == "gen") {
@@ -96,7 +104,7 @@ function validate(td) {
 
     for (i = 1; i < 10; i++) {
         if (a[i] == 9) {
-            tn.rows[0].cells[i - 1].style.backgroundColor = "gray";
+            tn.rows[(i - 1) / 5].cells[(i - 1) % 5].style.backgroundColor = "gray";
         }
     }
     if (td == null) return;

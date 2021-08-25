@@ -27,7 +27,7 @@ function sendAll(o) {
 }
 
 router.use(function (req, res, next) {
-    if (!req.url.startsWith("/sudoku")) req.url = "/sudoku" + req.url;
+    //if (!req.url.startsWith("/sudoku")) req.url = "/sudoku" + req.url;
     next();
 })
 
