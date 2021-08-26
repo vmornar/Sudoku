@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-//var ws = require('ws');
+var ws = require('ws');
 var router = express.Router();
 var fs = require("fs");
 var http = require('http');
@@ -51,7 +51,8 @@ app.use(express.static('public'));
 app.use('/', router);
 
 var webServer = httpserver.listen(port, function () {
-    var webSocketServer = new (require('ws')).Server({
+    //    var webSocketServer = new (require('ws')).Server({
+    var webSocketServer = new ws.Server({
         server: webServer
     });
     webSockets = {};

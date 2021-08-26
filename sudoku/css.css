@@ -17,6 +17,17 @@ td {
     text-align: center;
     vertical-align: middle;
 }
+.tbtn {
+    border-color: white;
+    border-spacing: 5px;
+    border-collapse: separate;
+}
+.btn {
+    border-color: white;
+    border: 0px;
+    border-radius: 5px;
+    background-color: wheat;
+}
 
 .bb {
     border-bottom: 3px solid black;

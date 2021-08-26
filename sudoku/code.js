@@ -104,7 +104,10 @@ function validate(td) {
 
     for (i = 1; i < 10; i++) {
         if (a[i] == 9) {
-            tn.rows[(i - 1) / 5].cells[(i - 1) % 5].style.backgroundColor = "gray";
+            //console.log(i, Math.floor((i - 1) / 5), (i - 1) % 5)
+            tn.rows[Math.floor((i - 1) / 5)].cells[(i - 1) % 5].style.backgroundColor = "gray";
+        } else {
+            tn.rows[Math.floor((i - 1) / 5)].cells[(i - 1) % 5].style.backgroundColor = "wheat";
         }
     }
     if (td == null) return;
