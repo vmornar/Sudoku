@@ -18,8 +18,6 @@ const {
 //     this.send(JSON.stringify(o));
 // }
 
-//console.dir(sudoku.genSudoku(50));
-
 var fs = require("fs");
 
 const port = process.env.PORT || 8080;
@@ -70,7 +68,6 @@ var webServer = httpserver.listen(port, function () {
         webSocket.on('message', function (message) {
             var cmd = JSON.parse(message);
             var o = {};
-            console.dir("Message", cmd)
             if (cmd.command == 'gen') {
                 result = {};
                 // execSync("main.exe " + cmd.difficulty, {
@@ -80,7 +77,6 @@ var webServer = httpserver.listen(port, function () {
                 o["command"] = "gen";
                 //o["puzzle"] = JSON.parse(puzzle.toString());
                 o["puzzle"] = sudoku.genSudoku(cmd.difficulty);
-                console.dir(o["puzzle"]);
             } else {
                 result[userId] = cmd.res;
                 o["command"] = "res";

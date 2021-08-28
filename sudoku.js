@@ -1,35 +1,21 @@
 let N = 9
+let org;
 
-function SolveSudoku(grid) {
-
+function CreateSudoku(grid) {
     let cell = { row: 0, col: 0 };
-
-    // If there is no unassigned location, we are done
     if (!FindUnassignedLocation(grid, cell))
-        return true; // success!
-
-    // consider digits 1 to 9
+        return true;
     for (let num = 1; num <= 9; num++) {
-        // if looks promising
-        if (isSafe(grid, cell.row, cell.col, num)) {
-            // make tentative assignment
+        if (isValid(grid, cell.row, cell.col, num)) {
             grid[cell.row][cell.col] = num;
-
-            // return, if success, yay!
-            if (SolveSudoku(grid))
+            if (CreateSudoku(grid))
                 return true;
-
-            // failure, unmake & try again
             grid[cell.row][cell.col] = 0;
         }
     }
-    return false; // this triggers backtracking
+    return false; 
 }
 
-/* Searches the grid to find an entry that is still unassigned. If
-   found, the reference parameters row, col will be set the location
-   that is unassigned, and true is returned. If no unassigned entries
-   remain, false is returned. */
 function FindUnassignedLocation(grid, cell) {
     for (cell.row = 0; cell.row < N; (cell.row)++)
         for (cell.col = 0; cell.col < N; (cell.col)++)
@@ -38,51 +24,86 @@ function FindUnassignedLocation(grid, cell) {
     return false;
 }
 
-/* Returns a boolean which indicates whether an assigned entry
-   in the specified row matches the given number. */
-function UsedInRow(grid, row, num) {
-    for (let col = 0; col < N; col++)
-        if (grid[row][col] == num)
-            return true;
-    return false;
+function isValid(grid, row, col, num) {
+    let row_start = Math.floor(row / 3) * 3;
+	let col_start = Math.floor(col / 3) * 3;
+	for (let i = 0; i != 9; i++){
+        if (grid[row][i] == num
+            || grid[i][col] == num
+            || grid[row_start + (i % 3)][col_start + Math.floor(i / 3)] == num) {
+			return false;
+		}
+	}
+	return true;
 }
 
-/* Returns a boolean which indicates whether an assigned entry
-   in the specified column matches the given number. */
-function UsedInCol(grid, col, num) {
-    for (let row = 0; row < N; row++)
-        if (grid[row][col] == num)
-            return true;
-    return false;
+function isUnique(grid, sol) {
+ 	for (let i = 0; i < 9; ++i){
+		for (let j = 0; j < 9; ++j){
+			if (grid[i][j] != sol[i][j]){
+				return false;
+			}
+		}
+	}
+	return true;   
 }
 
-/* Returns a boolean which indicates whether an assigned entry
-   within the specified 3x3 box matches the given number. */
-function UsedInBox(grid, boxStartRow, boxStartCol, num) {
-    for (let row = 0; row < 3; row++)
-        for (let col = 0; col < 3; col++)
-            if (grid[row + boxStartRow][col + boxStartCol] == num)
-                return true;
-    return false;
+function copyGrid(a, b) {
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            b[i][j] = a[i][j];
+        }
+    }
 }
 
-/* Returns a boolean which indicates whether it will be legal to assign
-   num to the given row,col location. */
-function isSafe(grid, row, col, num) {
-    /* Check if 'num' is not already placed in current row,
-       current column and current 3x3 box */
-    return !UsedInRow(grid, row, num) &&
-        !UsedInCol(grid, col, num) &&
-        !UsedInBox(grid, row - row % 3, col - col % 3, num);
+function solveSudoku(sol, row, col) {
+	if (row < 9 && col < 9) {
+		if (sol[row][col] != 0){
+			if ((col + 1) < 9){
+				return solveSudoku(sol, row, col + 1);
+			} else if ((row + 1) < 9){
+				return solveSudoku(sol, row + 1, 0);
+			} else{
+				return true;
+			}
+		} else {
+			for (let i = 0; i < 9; ++i) {
+				if (isValid(sol, row, col, i + 1)) {
+					sol[row][col] = i + 1;
+					if ((col + 1) < 9) {
+						if (solveSudoku(sol, row, col + 1)) {
+							return true;
+						} else {
+							sol[row][col] = 0;
+						}
+					} else if ((row + 1) < 9) {
+						if (solveSudoku(sol, row + 1, 0)) {
+							return true;
+						} else {
+							sol[row][col] = 0;
+						}
+					} else {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	} else {
+		return true;
+	}
 }
 
 function genSudoku(perc) {
-
     let grid = new Array(N);
+    let sol = new Array(N);
+    org = new Array(N);
     let numbers = [];
     let i, j, k, tmp;
     for (i = 0; i < N; i++) {
         grid[i] = new Array(N);
+        sol[i] = new Array(N);
+        org[i] = new Array(N);
     }
     do {
         for (i = 0; i < N; i++) numbers[i] = i + 1;
@@ -102,16 +123,26 @@ function genSudoku(perc) {
                 }
             }
         }
-    } while (!SolveSudoku(grid));
-
+    } while (!CreateSudoku(grid));
+    copyGrid(grid, org);
     let puzzle = [];
+    for (k = 0; k < parseInt(perc); k++) {
+        while (1) {
+            do {
+                i = Math.round(Math.random() * (N - 1));
+                j = Math.round(Math.random() * (N - 1));
+            } while (grid[i][j] == 0);
+            let orig = grid[i][j];
+            grid[i][j] = 0;
+            copyGrid(grid, sol);
+            solveSudoku(sol, 0, 0);
+            if (!isUnique(grid, sol)) break;
+            grid[i][j] = orig;
+        }
+    }
     k = 0;
-    perc = parseInt(perc);
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
-            if (Math.round(Math.random() * 100) < perc) {
-                grid[i][j] = 0;
-            }
             puzzle[k++] = grid[i][j];
         }
     }
@@ -119,4 +150,4 @@ function genSudoku(perc) {
     return puzzle;
 }
 
-module.exports = { genSudoku };
+module.exports = { genSudoku, org };

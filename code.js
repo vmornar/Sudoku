@@ -4,20 +4,18 @@ var t;
 var tn;
 var timerId = null;
 var n;
-var my, theirs, name;
 var ws;
+var errFlag = false;
 
 function join() {
     var l = window.location.toString();
     var myname = $("#name").val();
-    console.log("l", l);
     var url;
     if (l.indexOf("https") >= 0) {
         url = l.replace("https://", "wss://") + "sudokusocket/" + myname;
     } else {
         url = l.replace("http://", "ws://") + "sudokusocket/" + myname;
     }
-    console.log("url", url);
     ws = new WebSocket(url);
     ws.onmessage = function (msg) {
         var cmd = JSON.parse(msg.data);
@@ -69,23 +67,23 @@ function start(gen) {
     ws.send(JSON.stringify(cmd));
     return;
 
-    $.get("sudoku/puzzle?gen=" + gen, function (data, status) {
-        var r = JSON.parse(data);
-        k = 0;
-        for (i = 0; i < 9; i++) {
-            for (j = 0; j < 9; j++) {
-                t.rows[i].cells[j].style.backgroundColor = "white";
-                cell = r[k] == 0 ? ' ' : r[k];
-                t.rows[i].cells[j].innerHTML = cell;
-                t.rows[i].cells[j].init = cell != ' ';
-                ++k;
-            }
-        }
-        time = 0;
-        if (timerId != null) clearInterval(timerId);
-        timerId = setInterval(timer, 1000);
-        td = null;
-    });
+    // $.get("sudoku/puzzle?gen=" + gen, function (data, status) {
+    //     var r = JSON.parse(data);
+    //     k = 0;
+    //     for (i = 0; i < 9; i++) {
+    //         for (j = 0; j < 9; j++) {
+    //             t.rows[i].cells[j].style.backgroundColor = "white";
+    //             cell = r[k] == 0 ? ' ' : r[k];
+    //             t.rows[i].cells[j].innerHTML = cell;
+    //             t.rows[i].cells[j].init = cell != ' ';
+    //             ++k;
+    //         }
+    //     }
+    //     time = 0;
+    //     if (timerId != null) clearInterval(timerId);
+    //     timerId = setInterval(timer, 1000);
+    //     td = null;
+    // });
 
 }
 
@@ -194,6 +192,17 @@ function validate(td) {
         // }
     }
 }
+
+// function showErrors() {
+//     errFlag = !errFlag;
+//     for (i = 0; i < 9; i++) {
+//         for (j = 0; j < 9; j++) {
+//             t.rows[i].cells[j].style.backgroundColor = "white";
+//             if (errFlag && t.rows[i].cells[j].html != genSudoku.)
+//             clearInterval(timerId);
+//         }
+//     }
+// }
 
 window.onload = function () {
     t = $("#puzzle")[0];
