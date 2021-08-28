@@ -7,6 +7,9 @@ var http = require('http');
 var httpserver = http.createServer(app);
 var result;
 var webSockets = {};
+
+var sudoku = require("./sudoku.js");
+
 const {
     execSync
 } = require('child_process');
@@ -14,6 +17,8 @@ const {
 // ws.prototype.sendJSON = function sendJSON(o) {
 //     this.send(JSON.stringify(o));
 // }
+
+//console.dir(sudoku.genSudoku(50));
 
 var fs = require("fs");
 
@@ -68,12 +73,14 @@ var webServer = httpserver.listen(port, function () {
             console.dir("Message", cmd)
             if (cmd.command == 'gen') {
                 result = {};
-                execSync("main.exe " + cmd.difficulty, {
-                    cwd: __dirname
-                });
-                puzzle = fs.readFileSync("puzzle.txt");
+                // execSync("main.exe " + cmd.difficulty, {
+                //     cwd: __dirname
+                // });
+                // puzzle = fs.readFileSync("puzzle.txt");
                 o["command"] = "gen";
-                o["puzzle"] = JSON.parse(puzzle.toString());
+                //o["puzzle"] = JSON.parse(puzzle.toString());
+                o["puzzle"] = sudoku.genSudoku(cmd.difficulty);
+                console.dir(o["puzzle"]);
             } else {
                 result[userId] = cmd.res;
                 o["command"] = "res";
